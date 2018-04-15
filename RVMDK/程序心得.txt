@@ -1,0 +1,55 @@
+使用MINISTM32F103RBT6的板子测试PMSM程序按下面的接线顺序：
+
+1、TIM1BKIN--------PB12      TIM1CH1-----------PA8
+   TIM1CHIN--------PB13      TIM1CH2-----------PA9
+   TIM1CH2N--------PB14      TIM1CH3-----------PA10
+   TIM1CH3N--------PB15      TIM1CH4-----------PA11
+   (REMAP功能）
+
+2、TIM2的三个通道输入 = PA0、PA1、PA2 (没有FT,注意用DIODE保护)
+   TIM3的二个通道输出 = PB4、PB5 可作为DA转换的PWM源 （REMAP功能）
+   TIM4的二个通道输入 = PB8、PB9  ---------CH3、CH4  
+   注意:凡是可以使用A/D的口线,都不是FT的.
+3、PA3、PA4、PA5为三个A/D转换，采样2相电流和母线电压, PA6为散热
+   温度,PA7为外部模拟电压输入,PB0,PB1为备用A/D输入.
+
+4、可以作为通用I/O的口线为：PB10、PB11、PA13、PA14、PA15、PB3可作为
+   键盘输入和其他状态指示。PD2为LED,PC13为TFT背光。
+   UP----PB11             DOWN------PB10
+   LEFT----PA14           RIGHT-----PA13
+   SEL-----PA15           USER------PB3
+   
+5、其他通讯口定义：PA11、PA12可以作为USB/CAN总线，PD2为LED指示，PB4,PB5为
+   DA0,DA1。PB6,PB7为485口，PB8,PB9为TIM4的3、4输入捕捉通道。
+
+5、需要处理的模块功能：
+   MAX3232的RX1、TX1接到了PA9、PA10。
+   发光LED-D2、D3为PA0、PA1，PA2为电位器调整。
+
+6、如果口线可以调整，把TFT的驱动改为SPI或者4线方式，或者
+   取消LCD，改用74HC595驱动的数码管显示。尽量增加有复用
+   功能的口线，比如A/D或者通讯口的引脚。
+
+=================================================================
+DISPLAY_LCD使用的函数为:
+ LCD_DisplayStringLine(Line0, ptr);
+ LCD_ClearLine(Line2);
+ LCD_SetTextColor(Blue);
+ LCD_DisplayChar(Line4, (u16)(320 -(16*(18-i))),'-')
+ LCD_DrawRect(161,97,1,2);
+ 核心函数: LCD_DrawChar(Line, Column, &ASCII_Table[Ascii * 24]);
+========================================================================================
+// When using Id = 0, NOMINAL_CURRENT is utilized to saturate the output of the 
+// PID for speed regulation (i.e. reference torque). 
+// Whit MB459 board, the value must be calculated accordingly with formula:
+// NOMINAL_CURRENT = (Nominal phase current (A, 0-to-peak)*32767* Rshunt) /0.64
+// 使用MB459时：  每A电流对应的A/D采样值（S16）=  Rshunt * Aop(电流增益 = 2.57）* 65536 / 3.3(V)
+   电流可以为负值，所以使用S16，而不是U16    // =  Rshunt * 32767 / 0.64	  
+//这里 0.64 = 1.65 / 2.57
+// 同理如果使用ICS，那么电流增益为AV =62.5（mv/A), 	那么 每A电流对应的A/D采样值（S16）= 
+// 电流可以为负值，所以使用S16，而不是U16，	Av * 65536 / 3.3 = Av * 32767 / 1.65 = 1241 (s16类型）
+//						则该电流ICS可以采样的最大电流为 = 32767 / 1241 = 26.4（A)
+// 如果Av = 1(V/A), 那么每A电流对应的A/D采样值（S16）= 32767 / 1.65 = 19858， 
+// 则该电流ICS可以采样的最大电流为 = 32767 / 19858 = 1.65（A)
+// 如果使用其他类型的电流传感器，那么电流增益的解释为：每变化1安培的电流，输出变化的电压值。
+============================================================================================
