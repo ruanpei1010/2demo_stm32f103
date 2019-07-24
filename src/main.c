@@ -53,8 +53,9 @@ int main(void)
 #endif
 //  SystemInit();
 //  RCC_Configuration();	  //SYSCLK = 72MHZ
-  NVIC_Configuration();   //USE FLSAH NOT RAM
-  GPIO_Configuration();	  //1¸öLED
+	NVIC_Configuration();   //USE FLSAH NOT RAM
+	GPIO_Configuration();	  //1¸öLED
+	GPIO_Configuration();	  //1¸öLED
 
   
 #ifdef THREE_SHUNT  
