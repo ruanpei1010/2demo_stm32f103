@@ -101,6 +101,11 @@ void UsageFault_Handler(void)
   /* Go to infinite loop when Usage Fault exception occurs */
   while (1)
   {
+    for(;;)
+    {
+
+
+    }
   }
 }
 
@@ -357,8 +362,8 @@ void DMA1_Channel7_IRQHandler(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void ADC1_2_IRQHandler(void)		//ADÖÐ¶ÏÓÐÈýÖÖÇé¿ö£ºAD_EOC¡¢AD_JEOC¡¢AD_AWD
-									//ÏÂÃæ·Ö±ð´¦ÀíÕâ3ÖÖÇé¿ö¡£
+void ADC1_2_IRQHandler(void)		//ADï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AD_EOCï¿½ï¿½AD_JEOCï¿½ï¿½AD_AWD
+									//ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
   //if(ADC_GetITStatus(ADC1, ADC_IT_JEOC) == SET))
   if((ADC1->SR & ADC_FLAG_JEOC) == ADC_FLAG_JEOC)
@@ -366,7 +371,7 @@ void ADC1_2_IRQHandler(void)		//ADÖÐ¶ÏÓÐÈýÖÖÇé¿ö£ºAD_EOC¡¢AD_JEOC¡¢AD_AWD
     //It clear JEOC flag
     ADC1->SR = ~(u32)ADC_FLAG_JEOC;
       
-    if (SVPWMEOCEvent())   //µÃµ½Ö±Á÷Ä¸ÏßµçÑ¹¡¢É¢ÈÈÆ÷ÎÂ¶ÈµÄAD×ª»»½á¹û¡£¹Ø±ÕADC1×ª»»¡£
+    if (SVPWMEOCEvent())   //ï¿½Ãµï¿½Ö±ï¿½ï¿½Ä¸ï¿½ßµï¿½Ñ¹ï¿½ï¿½É¢ï¿½ï¿½ï¿½ï¿½ï¿½Â¶Èµï¿½AD×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½ADC1×ªï¿½ï¿½ï¿½ï¿½
     {
       #ifdef DAC_FUNCTIONALITY 
       #if (defined OBSERVER_GAIN_TUNING || defined NO_SPEED_SENSORS)
@@ -378,27 +383,27 @@ void ADC1_2_IRQHandler(void)		//ADÖÐ¶ÏÓÐÈýÖÖÇé¿ö£ºAD_EOC¡¢AD_JEOC¡¢AD_AWD
       #endif  
       #endif
       
-      MCL_Calc_BusVolt();  //¼ÆËãÄ¸ÏßµçÑ¹Öµ¡£
+      MCL_Calc_BusVolt();  //ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ßµï¿½Ñ¹Öµï¿½ï¿½
       switch (State)
       {
           case RUN:          
-            FOC_Model();  // Õý³£ÔËÐÐÊ±£¬½øÐÐÊ¸Á¿¿ØÖÆ£¬°üÀ¨£º PMSM torque and flux µ÷Õû¡£    
+            FOC_Model();  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PMSM torque and flux ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    
           break;       
     
           case START:        
           #ifdef NO_SPEED_SENSORS
            #ifdef VIEW_ENCODER_FEEDBACK
-           ENC_Start_Up();	  // ÎÞ´«¸ÐÆ÷Ä£Ê½¿ªÊ¼Æô¶¯£¬Æô¶¯Ê±¼äÎª£ºhStart_Up_TimeLeft_500us£¬³õÊ¼Îª£º10S
+           ENC_Start_Up();	  // ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªï¿½ï¿½hStart_Up_TimeLeft_500usï¿½ï¿½ï¿½ï¿½Ê¼Îªï¿½ï¿½10S
            if ( (wGlobal_Flags & FIRST_START) != FIRST_START)
            {
              STO_Start_Up();
            }           
            #else
-           STO_Start_Up();	// ÎÞ´«¸ÐÆ÷Ä£Ê½¿ªÊ¼Æô¶¯£¬Æô¶¯Ê±¼äÎª£ºhStart_Up_TimeLeft_500us£¬³õÊ¼Îª£º10S
+           STO_Start_Up();	// ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªï¿½ï¿½hStart_Up_TimeLeft_500usï¿½ï¿½ï¿½ï¿½Ê¼Îªï¿½ï¿½10S
            #endif
           #elif defined ENCODER
            ENC_Start_Up();       
-          #elif defined HALL_SENSORS  // »ô¶ûÔª¼þÃ»ÓÐÆô¶¯¹ý³Ì¡£
+          #elif defined HALL_SENSORS  // ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¡ï¿½
            State = RUN;
           #endif       
           break; 
@@ -452,9 +457,9 @@ void ADC1_2_IRQHandler(void)		//ADÖÐ¶ÏÓÐÈýÖÖÇé¿ö£ºAD_EOC¡¢AD_JEOC¡¢AD_AWD
         MCDAC_Update_Output();
       #endif    
     }
-  }	  // ÉÏÃæÊÇÕý³£×¢ÈëAD×ª»»ºó£¬ÐèÒª´¦ÀíµÄ¡£Ç°2ÖÖÖÐ¶ÏÀà±ð¡£
+  }	  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½AD×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½Ç°2ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½
   else 
-  {	   // ÕâÀïÊÇAWDÄ£Äâ¿´ÃÅ¹·±»¼¤»îÁË¡£
+  {	   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AWDÄ£ï¿½â¿´ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½
     #ifdef THREE_SHUNT    
     if(ADC_GetITStatus(ADC1, ADC_IT_AWD) == SET)
     #elif defined SINGLE_SHUNT
@@ -474,8 +479,8 @@ void ADC1_2_IRQHandler(void)		//ADÖÐ¶ÏÓÐÈýÖÖÇé¿ö£ºAD_EOC¡¢AD_JEOC¡¢AD_AWD
      ADC_ClearFlag(ADC2, ADC_FLAG_AWD);
     #endif     
     }    
-  }	  //ÕâÊÇADÄ£Äâ¿´ÃÅ¹·±»´¥·¢ÁË¡£¿´ÃÅ¹·ÊÇÓÉÓÚÖ±Á÷Ä¸Ïß¹ýÑ¹ËùÖÂ£¬¹ýÁ÷ºÍ¹ýÈÈÊÇÓ²¼þ¼ì²â
-}	 // ºó´¥·¢TIM1_BRK_IRQHandler½ô¼±Í£³µÖÐ¶Ï£¬ÏìÓ¦¼¶±ð×î¸ß¡£
+  }	  //ï¿½ï¿½ï¿½ï¿½ADÄ£ï¿½â¿´ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ä¸ï¿½ß¹ï¿½Ñ¹ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½
+}	 // ï¿½ó´¥·ï¿½TIM1_BRK_IRQHandlerï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¡ï¿½
 
 /*******************************************************************************
 * Function Name  : USB_HP_CAN_TX_IRQHandler
@@ -543,7 +548,7 @@ void EXTI9_5_IRQHandler(void)
 *******************************************************************************/
 void TIM1_BRK_IRQHandler(void)
 {
-  MCL_Fault_Reset_On();      //¹Ø±ÕIGBT
+  MCL_Fault_Reset_On();      //ï¿½Ø±ï¿½IGBT
   MCL_SetFault(OVER_CURRENT);
   TIM_ClearITPendingBit(TIM1, TIM_IT_Break);
 }
