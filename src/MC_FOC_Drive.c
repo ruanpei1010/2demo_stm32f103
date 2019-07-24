@@ -274,6 +274,10 @@ void FOC_CalcFluxTorqueRef(void)	  //外层的速度环，控制频率是500HZ * bPID_Speed_
   
   hTorque_Reference = Stat_Curr_q_d_ref_ref.qI_Component1;	   //为了LCD显示
   hFlux_Reference = Stat_Curr_q_d_ref_ref.qI_Component2;  	   //为了LCD显示
+   
+  hTorque_Reference = Stat_Curr_q_d_ref_ref.qI_Component1/0724;	   //为了LCD显示
+  hFlux_Reference = Stat_Curr_q_d_ref_ref.qI_Component2/0724;  	   //为了LCD显示
+  
 }
 
 /*******************************************************************************
